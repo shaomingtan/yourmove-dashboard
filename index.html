@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="d3.slider.js"></script>
+  <link rel="stylesheet" href="d3.slider.css" />
+</head>
+<body>
+<div class="wrapper">
+  <h2>Slider value: <span id="slider1text">0</span></h2>
+  <div id="slider1"></div>
+  <div id="box1"></div>
+</div>
+<script>
+  //create svg container and rect and set its color and initial opacity
+  CreateRect("#box1","#000000",0.5);
+
+  //slider function to change opacity
+  d3.select('#slider1').call(d3.slider().on("slide", function(evt, value) {      
+        d3.select('#slider1text').text(value);
+        RectIntensity("#box1",value/100);
+  }));
+  function CreateRect (DivID, color, intensity) {
+    //creates a svg container that is svg
+    var svgContainer = d3.select(DivID).append("svg")
+      .attr("width", 80)
+      .attr("height", 50);
+    var rectangle = svgContainer.append("rect")
+      .attr("x", 10)
+      .attr("y", 10)
+      .attr("width", 65)
+      .attr("height", 40)
+      .style("fill", color)
+      .style("opacity", intensity);
+  }
+  function RectIntensity (DivID,intensity) {
+    //select svg container and all the rectangles inside and change its intensity
+    var svgContainer = d3.select(DivID).selectAll("rect");
+      svgContainer.style("opacity", intensity);
+  }
+</script>
+</body>
+</html>
