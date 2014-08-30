@@ -11,6 +11,7 @@
   <h2>Slider value: <span id="slider1text">0</span></h2>
   <div id="slider1"></div>
   <div id="box1"></div>
+  <div id="box2"></div>
 </div>
 <script>
   //create svg container and rect and set its color and initial opacity
@@ -19,8 +20,54 @@
   //slider function to change opacity
   d3.select('#slider1').call(d3.slider().on("slide", function(evt, value) {      
         d3.select('#slider1text').text(value);
-        RectIntensity("#box1",value/100);
+        RectIntensity("#box1","rect",value/100);
+        RectIntensity ("#box2","circle",value/100)
   }));
+  CreateSvgCanvas("#box2")
+  function CreateSvgCanvas (DivID) {
+    //creates a svg container that is svg
+    var svgContainer = d3.select(DivID).append("svg")
+      .attr("width", 1400)
+      .attr("height", 600)
+      .attr("x", 0)
+      .attr("y", 0);
+      svgContainer.append("rect")
+        .attr("width", "100%")
+        .attr("height", "100%")
+        .style("fill", "rgb(202, 240, 237)");
+      for(y=0;y<4;y++){
+        for(x=0;x<8;x++){
+          //create 4 svg containers at y =0
+          CreateInnverSvg(svgContainer, x*150+100, y*150);
+        }
+      }
+  }
+  function CreateInnverSvg (svgContainer,x,y){
+    var smallsvg = svgContainer.append("svg")
+      .attr("x", x)
+      .attr("y", y)
+      .attr("width", 100)
+      .attr("height", 100);
+      var rect = smallsvg.append("rect")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("width", "100%")
+        .attr("height", "100%")
+        .style("fill", "rgb(241, 219, 212)");
+        CreateInnerRandCircles (smallsvg,x,y,10);
+  }
+  function CreateInnerRandCircles (smallsvg,x,y,count){
+    for(i=0;i<count;i++){
+      var circle = smallsvg.append("circle")
+      .attr("cx", Math.floor(Math.random() * 80) + 10)
+      .attr("cy", Math.floor(Math.random() * 80) + 20)
+      .attr("r", 10)
+      .attr("width", 20)
+      .attr("height", 20)
+      .style("fill", "#000")
+      .style("opacity", "0.5");
+    }
+  }
   function CreateRect (DivID, color, intensity) {
     //creates a svg container that is svg
     var svgContainer = d3.select(DivID).append("svg")
@@ -34,9 +81,9 @@
       .style("fill", color)
       .style("opacity", intensity);
   }
-  function RectIntensity (DivID,intensity) {
+  function RectIntensity (DivID,shape,intensity) {
     //select svg container and all the rectangles inside and change its intensity
-    var svgContainer = d3.select(DivID).selectAll("rect");
+    var svgContainer = d3.select(DivID).selectAll(shape);
       svgContainer.style("opacity", intensity);
   }
 </script>
