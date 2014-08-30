@@ -32,6 +32,25 @@ var data =
     [61,43,36,72,26,53,19,52,43,11]
   ]
 ];
+
+  //sankey test
+  d3.json("data/sankey-formatted.json", function(error, graph) {
+    var nodeMap = {};
+      graph.nodes.forEach(function(x) { nodeMap[x.name] = x; });
+      graph.links = graph.links.map(function(x) {
+        return {
+          source: nodeMap[x.source],
+          target: nodeMap[x.target],
+          value: x.value
+        };
+      });
+    sankey
+      .nodes(graph.nodes)
+      .links(graph.links)
+      .layout(32);
+  });
+
+
   //create svg container and rect and set its color and initial opacity
   CreateRect("#box1","#000000",0.5);
 
