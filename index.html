@@ -33,24 +33,6 @@ var data =
   ]
 ];
 
-  //sankey test
-  d3.json("sankey-formatted.json", function(error, graph) {
-    var nodeMap = {};
-      graph.nodes.forEach(function(x) { nodeMap[x.name] = x; });
-      graph.links = graph.links.map(function(x) {
-        return {
-          source: nodeMap[x.source],
-          target: nodeMap[x.target],
-          value: x.value
-        };
-      });
-    sankey
-      .nodes(graph.nodes)
-      .links(graph.links)
-      .layout(32);
-  });
-
-
   //create svg container and rect and set its color and initial opacity
   CreateRect("#box1","#000000",0.5);
 
@@ -84,10 +66,10 @@ var data =
     //creates a svg container that is svg
     var svgContainer = d3.select(DivID).append("svg")
       .attr("width", 1400)
-      .attr("height", 600)
+      .attr("height", 800)
       .attr("x", 0)
       .attr("y", 0)
-      .style("background-image", "url('http://newton-circus.com/wp-content/uploads/2013/10/MobileMovies-NCslider.jpg')");
+      .style("background-image", "url('train_up.png')");
       svgContainer.append("rect")
         .attr("width", "100%")
         .attr("height", "100%")
@@ -95,9 +77,54 @@ var data =
         ;
       for(y=0;y<4;y++){
         for(x=0;x<10;x++){
-          CreateInnverSvg(svgContainer,y+"-"+x,x*140+10,y*140,5);
+          if(y==0){
+            CreateInnverSvg(svgContainer,y+"-"+x,x*140+20,0,5);
+          }
+          if(y==1){
+            CreateInnerCir(svgContainer,y+"-"+x,x*140+20,90,9,1);
+            //create circles
+
+          }
+          if(y==2){
+            CreateInnerCir(svgContainer,y+"-"+x,x*140+20,460,5,0);
+          }
+          if(y==3){
+            CreateInnverSvg(svgContainer,y+"-"+x,x*140+20,550,5);
+          }
         }
       }
+  }
+  function CreateInnerCir (svgContainer,id,xpos,ypos,count,dir) {
+    //creates a svg container that is svg
+      var smallsvg = svgContainer.append("svg")
+        .attr("x", xpos)
+        .attr("y", ypos)
+        .attr("id", "inner-svg-"+id)
+        .attr("width", 10)
+        .attr("height", 400);
+    for(i=0;i<count;i++){
+      if(dir==1){
+        var circle = smallsvg.append("circle")
+        .attr("cx", 5)
+        .attr("cy", 5+35*i)
+        .attr("r", 10)
+        .attr("width", "100%")
+        .attr("height", "100%")
+        .style("fill", "#000")
+        .style("opacity", "0.5");
+      }
+      if(dir==0){
+        var circle = smallsvg.append("circle")
+        .attr("cx", 5)
+        .attr("cy", 5+35*i)
+        .attr("r", 10)
+        .attr("width", "100%")
+        .attr("height", "100%")
+        .style("fill", "#000")
+        .style("opacity", "0.5");
+      }
+          
+    }
   }
   function CreateInnverSvg (svgContainer,id,xpos,ypos,count){
     var smallsvg = svgContainer.append("svg")
