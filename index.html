@@ -2,7 +2,7 @@
 <head>
   <meta charset="utf-8">
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="d3.v3.js"></script>
   <script src="d3.slider.js"></script>
   <link rel="stylesheet" href="d3.slider.css" />
 </head>
@@ -30,11 +30,13 @@
       .attr("width", 1400)
       .attr("height", 600)
       .attr("x", 0)
-      .attr("y", 0);
+      .attr("y", 0)
+      .style("background-image", "url('http://newton-circus.com/wp-content/uploads/2013/10/MobileMovies-NCslider.jpg')");
       svgContainer.append("rect")
         .attr("width", "100%")
         .attr("height", "100%")
-        .style("fill", "rgb(202, 240, 237)");
+        .style("fill", "none")
+        ;
       for(y=0;y<4;y++){
         for(x=0;x<8;x++){
           //create 4 svg containers at y =0
