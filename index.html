@@ -36,9 +36,36 @@ var data =
   //create svg container and rect and set its color and initial opacity
   CreateRect("#box1","#000000",0.5);
 
+d3.json('cabin.csv',function (error, data) {
+          if(error) return console.warn(error);
+          // var hubTime = 0;
+          // var currentTime = 0;
+          // var currentTimeArray = getCurrentTime();
+          // var currHours = currentTimeArray[0];
+          // var currMin = currentTimeArray[1];
+          // var currTime_Zone = currentTimeArray[2];
+
+          // $("#currentTime").append(currTime_Zone);
+          // if(currHours<12) {
+          //   currTime_Zone = currTime_Zone.substring(currTime_Zone.indexOf("AM"));
+          // }
+          // else {
+          //   currTime_Zone = currTime_Zone.substring(currTime_Zone.indexOf("PM"));
+          // }
+
+          // currentTime = currHours + ":" + currMin;
+
+          // var date = data.heartbeat.toString();
+          
+          // var hours = date.substring(11,13);
+          // var minutes = date.substring(14,16);
+          // hubTime = hours + ":" + minutes;
+          console.log(data);
+});
+
   //slider function to change opacity
   d3.select('#slider1').call(d3.slider().on("slide", function(evt, value) {      
-        d3.select('#slider1text').text(value);
+        d3.select('#slider1text').text(Math.floor(value));
         //RectIntensity("#box1","rect",value/100);
         //RectIntensity ("#box2","circle",value/100)
         //console.log(value)
