@@ -14,16 +14,52 @@
   <div id="box2"></div>
 </div>
 <script>
+  //Initialise variables
+  var person = {firstName:"John", lastName:"Doe", age:50, eyeColor:"blue"};
+var data =
+[
+  [
+    [7,3,5,24,6,2,34,64,6,12],
+    [41,53,16,32,56,23,3,6,23,4],
+    [12,33,56,62,26,33,41,26,33,1],
+    [21,23,76,12,66,33,9,62,33,41]
+  ],
+  [
+    [12,13,35,44,26,12,24,54,16,32],
+    [11,33,26,12,36,43,13,26,53,14],
+    [22,63,26,12,56,23,11,46,23,11],
+    [61,43,36,72,26,53,19,52,43,11]
+  ]
+];
   //create svg container and rect and set its color and initial opacity
   CreateRect("#box1","#000000",0.5);
 
   //slider function to change opacity
   d3.select('#slider1').call(d3.slider().on("slide", function(evt, value) {      
         d3.select('#slider1text').text(value);
-        RectIntensity("#box1","rect",value/100);
-        RectIntensity ("#box2","circle",value/100)
+        //RectIntensity("#box1","rect",value/100);
+        //RectIntensity ("#box2","circle",value/100)
+        //console.log(value)
+        if(value<50){
+          //console.log("small")
+        }
+        else if(value>=50) {
+          //console.log("big")
+          UpdateSvgCanvas("#box2")
+        }
   }));
   CreateSvgCanvas("#box2")
+  d3.select(".inner-svg-0-0").remove();
+  function UpdateSvgCanvas (DivID) {
+    var svgContainer = d3.select(DivID).append("svg")
+      for(y=0;y<4;y++){
+        for(x=0;x<10;x++){
+          var smallsvg = d3.select("#inner-svg-"+y+"-"+x)
+          smallsvg.selectAll("circle").remove();
+          CreateInnerRandCircles (smallsvg,data[0][y][x]);
+        }
+      }
+  }
   function CreateSvgCanvas (DivID) {
     //creates a svg container that is svg
     var svgContainer = d3.select(DivID).append("svg")
@@ -38,31 +74,32 @@
         .style("fill", "none")
         ;
       for(y=0;y<4;y++){
-        for(x=0;x<8;x++){
-          //create 4 svg containers at y =0
-          CreateInnverSvg(svgContainer, x*150+100, y*150);
+        for(x=0;x<10;x++){
+          CreateInnverSvg(svgContainer,y+"-"+x,x*140+10,y*140,5);
         }
       }
   }
-  function CreateInnverSvg (svgContainer,x,y){
+  function CreateInnverSvg (svgContainer,id,xpos,ypos,count){
     var smallsvg = svgContainer.append("svg")
-      .attr("x", x)
-      .attr("y", y)
-      .attr("width", 100)
-      .attr("height", 100);
+      .attr("x", xpos)
+      .attr("y", ypos)
+      .attr("id", "inner-svg-"+id)
+      .attr("width", 80)
+      .attr("height", 80);
       var rect = smallsvg.append("rect")
         .attr("x", 0)
         .attr("y", 0)
         .attr("width", "100%")
         .attr("height", "100%")
         .style("fill", "rgb(241, 219, 212)");
-        CreateInnerRandCircles (smallsvg,x,y,10);
+        CreateInnerRandCircles (smallsvg,count);
   }
-  function CreateInnerRandCircles (smallsvg,x,y,count){
+  function CreateInnerRandCircles (smallsvg,count){
+    console.log("here"+smallsvg)
     for(i=0;i<count;i++){
       var circle = smallsvg.append("circle")
-      .attr("cx", Math.floor(Math.random() * 80) + 10)
-      .attr("cy", Math.floor(Math.random() * 80) + 20)
+      .attr("cx", Math.floor(Math.random() * 40) + 10)
+      .attr("cy", Math.floor(Math.random() * 40) + 20)
       .attr("r", 10)
       .attr("width", 20)
       .attr("height", 20)
