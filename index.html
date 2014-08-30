@@ -13,19 +13,20 @@
   <div id="box1"></div>
   <div id="box2"></div>
 </div>
+
 <script>
   //Initialise variables
   var person = {firstName:"John", lastName:"Doe", age:50, eyeColor:"blue"};
 var data =
 [
   [
-    [7,3,5,24,6,2,34,64,6,12],
-    [41,53,16,32,56,23,3,6,23,4],
-    [12,33,56,62,26,33,41,26,33,1],
-    [21,23,76,12,66,33,9,62,33,41]
+    [31,31,51,24,61,21,34,64,61,12],
+    [41,53,16,32,56,23,34,63,23,42],
+    [12,33,56,62,26,33,41,26,33,14],
+    [21,23,76,12,66,33,22,62,33,41]
   ],
   [
-    [12,13,35,44,26,12,24,54,16,32],
+    [60,13,35,44,26,12,24,54,16,32],
     [11,33,26,12,36,43,13,26,53,14],
     [22,63,26,12,56,23,11,46,23,11],
     [61,43,36,72,26,53,19,52,43,11]
@@ -42,21 +43,21 @@ var data =
         //console.log(value)
         if(value<50){
           //console.log("small")
+          UpdateSvgCanvas("#box2",0)
         }
         else if(value>=50) {
           //console.log("big")
-          UpdateSvgCanvas("#box2")
+          UpdateSvgCanvas("#box2",1)
         }
   }));
   CreateSvgCanvas("#box2")
-  d3.select(".inner-svg-0-0").remove();
-  function UpdateSvgCanvas (DivID) {
+  function UpdateSvgCanvas (DivID,index) {
     var svgContainer = d3.select(DivID).append("svg")
       for(y=0;y<4;y++){
         for(x=0;x<10;x++){
           var smallsvg = d3.select("#inner-svg-"+y+"-"+x)
           smallsvg.selectAll("circle").remove();
-          CreateInnerRandCircles (smallsvg,data[0][y][x]);
+          CreateInnerRandCircles (smallsvg,data[index][y][x]);
         }
       }
   }
@@ -94,18 +95,32 @@ var data =
         .style("fill", "rgb(241, 219, 212)");
         CreateInnerRandCircles (smallsvg,count);
   }
+  //count can be from 0 - infinity
+  //set first range of 0-10 as opacity 0.1 and width based on count
+  //set second range of 10-20 as opacity 0.2 and width based on count -10
   function CreateInnerRandCircles (smallsvg,count){
     console.log("here"+smallsvg)
-    for(i=0;i<count;i++){
-      var circle = smallsvg.append("circle")
-      .attr("cx", Math.floor(Math.random() * 40) + 10)
-      .attr("cy", Math.floor(Math.random() * 40) + 20)
-      .attr("r", 10)
-      .attr("width", 20)
-      .attr("height", 20)
-      .style("fill", "#000")
-      .style("opacity", "0.5");
-    }
+    //sense range 10, 20, 30 to 100 or more than that
+    var range = Math.floor(count/10)
+    var circle_op
+    var circle_r
+    //set opacity of circle
+    circle_r = count/60*40
+    // if(range<10){
+    //   circle_op = range*0.1
+    //   circle_r = count%10
+    // }
+
+
+    var circle = smallsvg.append("circle")
+    .attr("cx", 40)
+    .attr("cy", 40)
+    .attr("r", circle_r)
+    .attr("width", 20)
+    .attr("height", 20)
+    .style("fill", "#000")
+    .style("opacity", "0.5");
+
   }
   function CreateRect (DivID, color, intensity) {
     //creates a svg container that is svg
