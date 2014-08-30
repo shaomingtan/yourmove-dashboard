@@ -42,57 +42,118 @@ var data =
         //RectIntensity("#box1","rect",value/100);
         //RectIntensity ("#box2","circle",value/100)
         //console.log(value)
-        if(value<50){
+        //if(value<50){
           //console.log("small")
-          UpdateSvgCanvas("#box2",0)
-        }
-        else if(value>=50) {
+          //UpdateSvgCanvas("#box2",0)
+        //}
+        //else if(value>=50) {
           //console.log("big")
-          UpdateSvgCanvas("#box2",1)
-        }
+          UpdateSvgCanvas("#box2",value)
+          d3.selectAll("circle").remove();
+          UpdateInnerCir("#box2",value)
+        //}
   }));
   CreateSvgCanvas("#box2")
-  function UpdateSvgCanvas (DivID,index) {
-    var svgContainer = d3.select(DivID).append("svg")
-      for(y=0;y<4;y++){
+  function UpdateSvgCanvas (DivID,count) {
+    var max = 56;
+    if(count>max){
+      count=max;
+    }
+    value=max-count
+      for(y=0;y<1;y++){
         for(x=0;x<10;x++){
           var smallsvg = d3.select("#inner-svg-"+y+"-"+x)
-          smallsvg.selectAll("circle").remove();
-          CreateInnerRandCircles (smallsvg,data[index][y][x]);
+            .attr("y", 11+value)
+            .attr("height", 57-value);
         }
       }
   }
+  function UpdateInnerCir (DivID,count) {
+    var max = 57;
+    var dir = 1;
+    if(count>max){
+      count=max;
+    }
+      for(y=1;y<2;y++){
+        for(x=0;x<10;x++){
+          id="#inner-svg-"+y+"-"+x
+          var smallsvg = d3.select(id)
+            i=count
+            i=Math.floor(i)
+            while(i>0){
+              if(dir==1){
+                var circle = smallsvg.append("circle")
+                .attr("cx", 5)
+                .attr("cy", 5+25*i)
+                .attr("r", 10)
+                .attr("width", "100%")
+                .attr("height", "100%")
+                .style("fill", "#000")
+                .style("opacity", "0.5");
+                //console.log(5+25*i)
+              }
+              if(dir==0){
+                var circle = smallsvg.append("circle")
+                .attr("cx", 5)
+                .attr("cy", 5+35*i)
+                .attr("r", 10)
+                .attr("width", "100%")
+                .attr("height", "100%")
+                .style("fill", "#000")
+                .style("opacity", "0.5");
+              } 
+              i--;
+            }
+        }
+      }   
+  }
+
   function CreateSvgCanvas (DivID) {
     //creates a svg container that is svg
     var svgContainer = d3.select(DivID).append("svg")
-      .attr("width", 1400)
+      .attr("width", 1290)
       .attr("height", 800)
       .attr("x", 0)
       .attr("y", 0)
-      .style("background-image", "url('train_up.png')");
+      .style("background-image", "url('train_up.png')")
+      .style("background-repeat", "no-repeat")
+      .style("margin-left", "70px");
       svgContainer.append("rect")
         .attr("width", "100%")
         .attr("height", "100%")
         .style("fill", "none")
         ;
-      for(y=0;y<4;y++){
-        for(x=0;x<10;x++){
+      for(y=0;y<2;y++){
+        for(x=0;x<7;x++){
           if(y==0){
-            CreateInnverSvg(svgContainer,y+"-"+x,x*140+20,0,5);
+            CreateInnverSvg(svgContainer,y+"-"+x,x*150+138,11,59);
           }
           if(y==1){
-            CreateInnerCir(svgContainer,y+"-"+x,x*140+20,90,9,1);
+            CreateInnerCir(svgContainer,y+"-"+x,x*150+138,110,9,1);
             //create circles
-
-          }
-          if(y==2){
-            CreateInnerCir(svgContainer,y+"-"+x,x*140+20,460,5,0);
-          }
-          if(y==3){
-            CreateInnverSvg(svgContainer,y+"-"+x,x*140+20,550,5);
-          }
+           }
         }
       }
+  }
+  function CreateInnverSvg (svgContainer,id,xpos,ypos,count){
+    var max = 56;
+    if(count>max){
+      count=max;
+    }
+    value=max-count
+    var smallsvg = svgContainer.append("svg")
+      .attr("x", xpos)
+      .attr("y", ypos+value)
+      .attr("id", "inner-svg-"+id)
+      .attr("width", 96)
+      .attr("height", 57-value);
+      var rect = smallsvg.append("rect")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("width", "100%")
+        .attr("height", "100%")
+        .style("fill", "rgb(148, 14, 62)");
+        //CreateInnerRandCircles (smallsvg,count);
   }
   function CreateInnerCir (svgContainer,id,xpos,ypos,count,dir) {
     //creates a svg container that is svg
@@ -106,7 +167,7 @@ var data =
       if(dir==1){
         var circle = smallsvg.append("circle")
         .attr("cx", 5)
-        .attr("cy", 5+35*i)
+        .attr("cy", 5+25*i)
         .attr("r", 10)
         .attr("width", "100%")
         .attr("height", "100%")
@@ -122,24 +183,8 @@ var data =
         .attr("height", "100%")
         .style("fill", "#000")
         .style("opacity", "0.5");
-      }
-          
+      } 
     }
-  }
-  function CreateInnverSvg (svgContainer,id,xpos,ypos,count){
-    var smallsvg = svgContainer.append("svg")
-      .attr("x", xpos)
-      .attr("y", ypos)
-      .attr("id", "inner-svg-"+id)
-      .attr("width", 80)
-      .attr("height", 80);
-      var rect = smallsvg.append("rect")
-        .attr("x", 0)
-        .attr("y", 0)
-        .attr("width", "100%")
-        .attr("height", "100%")
-        .style("fill", "rgb(241, 219, 212)");
-        CreateInnerRandCircles (smallsvg,count);
   }
   //count can be from 0 - infinity
   //set first range of 0-10 as opacity 0.1 and width based on count
