@@ -21,6 +21,14 @@
       width: 1200px;
       margin: auto;
     }
+    .capacities{
+      position: absolute;
+      left:200px;
+      top:150px;
+    }
+    #train-capacity{
+      padding-top: 40px;
+    }
   </style>
 </head>
 <body>
@@ -74,6 +82,12 @@
 </nav>
   <img src="shakey.gif" height="53" width="33">
   <h2>Kent Ridge Station</h2>
+  <div class="capacities" id="train-capacity">
+    <span>Train Capacity:</span><span id="train-cap"></span>
+  </div>
+  <div class="capacities" id="station-capacity">
+    <span>Station Capacity:</span><span id="station-cap"></span>
+  </div>
   <h2>Time: <span id="slider1text">0500</span><span>h</span></h2>  
   <div id="box2"></div>
   <div id="slider1"></div>
@@ -95,7 +109,59 @@ var data =
     [22,63,26,12,56,23,11],
     [61,43,36,72,26,53,19]
   ]
-];  
+];
+  function UpdateWarningStn(id,value){
+    final_color=color(value);
+    console.log(value)
+    console.log(final_color)
+    console.log(id)
+    var warning_stn = d3.select(id).select('svg').select('rect')
+      .style("fill",final_color)
+  }
+  function UpdateWarningTrn(id,value){
+    final_color=color(value);
+    console.log(value)
+    console.log(final_color)
+    console.log(id)
+    var warning_stn = d3.select(id).select('svg').select('rect')
+      .style("fill",final_color)
+  }
+  //style station and train warning buttons  
+  var warning_stn = d3.select('#station-cap').append("svg")
+      .attr("width", 20)
+      .attr("height", 20)
+      .attr("x", 0)
+      .attr("y", 0)
+      .style("margin-left","5px");
+    warning_stn.append("rect")
+        .attr("width","20px")
+        .attr("height","20px")
+        .style("fill", "none")
+        ;
+  //style station and train warning buttons  
+  var warning_stn = d3.select('#train-cap').append("svg")
+      .attr("width", 20)
+      .attr("height", 20)
+      .attr("x", 0)
+      .attr("y", 0)
+      .style("margin-left","20px");
+    warning_stn.append("rect")
+        .attr("width","20px")
+        .attr("height","20px")
+        .style("fill", "none")
+        ;
+
+var color = d3.scale.linear()
+    .domain([0, 1])
+    .range(["white", "red"]);
+ 
+// color(-1)   // "#ff0000" red
+// color(-0.5) // "#ff8080" pinkish
+// color(0)    // "#ffffff" white
+// color(0.5)  // "#80c080" getting greener
+// color(0.7)  // "#4da64d" almost there..
+// color(1)    // "#008000" totally green!
+
   //slider function to change opacity
   d3.select('#slider1').call(d3.slider().on("slide", function(evt, value) {
         range = value/100*1140;
@@ -109,16 +175,24 @@ var data =
           d3.select('#slider1text').text(time);
         }
         if(range>0 && range <100){
-          factor = (number)*(Math.random());
+          factor = (number)*(Math.random())*0.4;
+          UpdateWarningStn("#station-cap",factor/57*0.2)
+          UpdateWarningTrn("#train-cap",factor/57*0.2)
         }
         else if(range>100 && range <300){
           factor = (number)*(Math.random())+30;
+          UpdateWarningStn("#station-cap",factor/57*0.8)
+          UpdateWarningTrn("#train-cap",factor/57*0.8)
         }
         else if(range>700 && range <900){
           factor = (number)*(Math.random())+30;
+          UpdateWarningStn("#station-cap",factor/57*0.8)
+          UpdateWarningTrn("#train-cap",factor/57*0.8)
         }
         else{
-          factor = (number)*(Math.random())*0.2;
+          factor = (number)*(Math.random())*0.4;
+          UpdateWarningStn("#station-cap",factor/57*0.2)
+          UpdateWarningTrn("#train-cap",factor/57*0.2);
         }
         UpdateSvgCanvas("#box2",factor)
         d3.selectAll("circle").remove();
@@ -199,10 +273,10 @@ var data =
       for(y=0;y<2;y++){
         for(x=0;x<7;x++){
           if(y==0){
-            CreateInnverSvg(svgContainer,y+"-"+x,x*150+138,11,59);
+            CreateInnverSvg(svgContainer,y+"-"+x,x*150+138,11,0);
           }
           if(y==1){
-            CreateInnerCir(svgContainer,y+"-"+x,x*150+138,110,9,1);
+            CreateInnerCir(svgContainer,y+"-"+x,x*150+138,110,0,1);
           }
         }
       }
