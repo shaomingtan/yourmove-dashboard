@@ -5,82 +5,126 @@
   <script src="d3.v3.js"></script>
   <script src="d3.slider.js"></script>
   <link rel="stylesheet" href="d3.slider.css" />
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  <style>
+    .wrapper{
+      text-align: center;
+    }
+    #slider1{
+      width: 1200px;
+      margin: auto;
+    }
+  </style>
 </head>
 <body>
 <div class="wrapper">
-  <h2>Slider value: <span id="slider1text">0</span></h2>
-  <div id="slider1"></div>
-  <div id="box1"></div>
+<nav class="navbar navbar-default" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">SMRT Dashboard</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="#">Reports</a></li>
+        <li><a href="#">Campaigns</a></li>
+        <li class="active" class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Stations <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Joo Koon</a></li>
+            <li><a href="#"></a></li>
+            <li><a href="#">Pioneer</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Boon Lay</a></li>
+            <li class="divider"></li>
+            <li><a href="#">More</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Trains<span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#">EW001</a></li>
+              <li><a href="#"></a></li>
+              <li><a href="#">EW002</a></li>
+              <li class="divider"></li>
+              <li><a href="#">EW003</a></li>
+              <li class="divider"></li>
+              <li><a href="#">More</a></li>
+            </ul>
+
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+  <img src="shakey.gif" height="53" width="33">
+  <h2>Kent Ridge Station</h2>
+  <h2>Time: <span id="slider1text">0500</span><span>h</span></h2>  
   <div id="box2"></div>
+  <div id="slider1"></div>
 </div>
 
 <script>
   //Initialise variables
-  var person = {firstName:"John", lastName:"Doe", age:50, eyeColor:"blue"};
 var data =
 [
   [
-    [31,31,51,24,61,21,34,64,61,12],
-    [41,53,16,32,56,23,34,63,23,42],
-    [12,33,56,62,26,33,41,26,33,14],
-    [21,23,76,12,66,33,22,62,33,41]
+    [31,31,51,24,61,21,34],
+    [41,53,16,32,56,23,34],
+    [12,33,56,62,26,33,41],
+    [21,23,76,12,66,33,22]
   ],
   [
-    [60,13,35,44,26,12,24,54,16,32],
-    [11,33,26,12,36,43,13,26,53,14],
-    [22,63,26,12,56,23,11,46,23,11],
-    [61,43,36,72,26,53,19,52,43,11]
+    [60,13,35,44,26,12,24],
+    [11,33,26,12,36,43,13],
+    [22,63,26,12,56,23,11],
+    [61,43,36,72,26,53,19]
   ]
-];
-
-  //create svg container and rect and set its color and initial opacity
-  CreateRect("#box1","#000000",0.5);
-
-d3.json('cabin.csv',function (error, data) {
-          //if(error) return console.warn(error);
-          // var hubTime = 0;
-          // var currentTime = 0;
-          // var currentTimeArray = getCurrentTime();
-          // var currHours = currentTimeArray[0];
-          // var currMin = currentTimeArray[1];
-          // var currTime_Zone = currentTimeArray[2];
-
-          // $("#currentTime").append(currTime_Zone);
-          // if(currHours<12) {
-          //   currTime_Zone = currTime_Zone.substring(currTime_Zone.indexOf("AM"));
-          // }
-          // else {
-          //   currTime_Zone = currTime_Zone.substring(currTime_Zone.indexOf("PM"));
-          // }
-
-          // currentTime = currHours + ":" + currMin;
-
-          // var date = data.heartbeat.toString();
-          
-          // var hours = date.substring(11,13);
-          // var minutes = date.substring(14,16);
-          // hubTime = hours + ":" + minutes;
-          console.log(data);
-});
-
+];  
   //slider function to change opacity
-  d3.select('#slider1').call(d3.slider().on("slide", function(evt, value) {      
-        d3.select('#slider1text').text(Math.floor(value));
-        //RectIntensity("#box1","rect",value/100);
-        //RectIntensity ("#box2","circle",value/100)
-        //console.log(value)
-        //if(value<50){
-          //console.log("small")
-          //UpdateSvgCanvas("#box2",0)
-        //}
-        //else if(value>=50) {
-          //console.log("big")
-          UpdateSvgCanvas("#box2",value)
-          d3.selectAll("circle").remove();
-          UpdateInnerCir("#box2",value)
-        //}
+  d3.select('#slider1').call(d3.slider().on("slide", function(evt, value) {
+        range = value/100*1140;
+        //number=Math.floor(range);
+        number=Math.floor((Math.random() * 57) + 1);
+        time = 500 + Math.floor(range/60)*100 + Math.floor(range%60);
+        if(range<300){
+          d3.select('#slider1text').text("0"+time);
+        }
+        else{
+          d3.select('#slider1text').text(time);
+        }
+        if(range>0 && range <100){
+          factor = (number)*(Math.random());
+        }
+        else if(range>100 && range <300){
+          factor = (number)*(Math.random())+30;
+        }
+        else if(range>700 && range <900){
+          factor = (number)*(Math.random())+30;
+        }
+        else{
+          factor = (number)*(Math.random())*0.2;
+        }
+        UpdateSvgCanvas("#box2",factor)
+        d3.selectAll("circle").remove();
+        UpdateInnerCir("#box2",factor)
   }));
-  CreateSvgCanvas("#box2")
+  CreateSvgCanvas("#box2","train_up.png");
   function UpdateSvgCanvas (DivID,count) {
     var max = 56;
     if(count>max){
@@ -88,10 +132,12 @@ d3.json('cabin.csv',function (error, data) {
     }
     value=max-count
       for(y=0;y<1;y++){
-        for(x=0;x<10;x++){
+        for(x=0;x<7;x++){
+          value = value*(Math.random());
           var smallsvg = d3.select("#inner-svg-"+y+"-"+x)
             .attr("y", 11+value)
             .attr("height", 57-value);
+          value=max-count;
         }
       }
   }
@@ -102,11 +148,11 @@ d3.json('cabin.csv',function (error, data) {
       count=max;
     }
       for(y=1;y<2;y++){
-        for(x=0;x<10;x++){
+        for(x=0;x<7;x++){
           id="#inner-svg-"+y+"-"+x
           var smallsvg = d3.select(id)
-            i=count
-            i=Math.floor(i)
+            i=count*Math.random();
+            i=Math.floor(i);
             while(i>0){
               if(dir==1){
                 var circle = smallsvg.append("circle")
@@ -135,16 +181,16 @@ d3.json('cabin.csv',function (error, data) {
       }   
   }
 
-  function CreateSvgCanvas (DivID) {
+  function CreateSvgCanvas (DivID, image_url) {
     //creates a svg container that is svg
     var svgContainer = d3.select(DivID).append("svg")
       .attr("width", 1290)
-      .attr("height", 800)
+      .attr("height", 400)
       .attr("x", 0)
       .attr("y", 0)
-      .style("background-image", "url('train_up.png')")
+      .style("background-image", "url("+image_url+")")
       .style("background-repeat", "no-repeat")
-      .style("margin-left", "70px");
+      .style("margin-left", "10px");
       svgContainer.append("rect")
         .attr("width", "100%")
         .attr("height", "100%")
@@ -157,8 +203,7 @@ d3.json('cabin.csv',function (error, data) {
           }
           if(y==1){
             CreateInnerCir(svgContainer,y+"-"+x,x*150+138,110,9,1);
-            //create circles
-           }
+          }
         }
       }
   }
@@ -180,7 +225,6 @@ d3.json('cabin.csv',function (error, data) {
         .attr("width", "100%")
         .attr("height", "100%")
         .style("fill", "rgb(148, 14, 62)");
-        //CreateInnerRandCircles (smallsvg,count);
   }
   function CreateInnerCir (svgContainer,id,xpos,ypos,count,dir) {
     //creates a svg container that is svg
@@ -212,51 +256,6 @@ d3.json('cabin.csv',function (error, data) {
         .style("opacity", "0.5");
       } 
     }
-  }
-  //count can be from 0 - infinity
-  //set first range of 0-10 as opacity 0.1 and width based on count
-  //set second range of 10-20 as opacity 0.2 and width based on count -10
-  function CreateInnerRandCircles (smallsvg,count){
-    console.log("here"+smallsvg)
-    //sense range 10, 20, 30 to 100 or more than that
-    var range = Math.floor(count/10)
-    var circle_op
-    var circle_r
-    //set opacity of circle
-    circle_r = count/60*40
-    // if(range<10){
-    //   circle_op = range*0.1
-    //   circle_r = count%10
-    // }
-
-
-    var circle = smallsvg.append("circle")
-    .attr("cx", 40)
-    .attr("cy", 40)
-    .attr("r", circle_r)
-    .attr("width", 20)
-    .attr("height", 20)
-    .style("fill", "#000")
-    .style("opacity", "0.5");
-
-  }
-  function CreateRect (DivID, color, intensity) {
-    //creates a svg container that is svg
-    var svgContainer = d3.select(DivID).append("svg")
-      .attr("width", 80)
-      .attr("height", 50);
-    var rectangle = svgContainer.append("rect")
-      .attr("x", 10)
-      .attr("y", 10)
-      .attr("width", 65)
-      .attr("height", 40)
-      .style("fill", color)
-      .style("opacity", intensity);
-  }
-  function RectIntensity (DivID,shape,intensity) {
-    //select svg container and all the rectangles inside and change its intensity
-    var svgContainer = d3.select(DivID).selectAll(shape);
-      svgContainer.style("opacity", intensity);
   }
 </script>
 </body>
