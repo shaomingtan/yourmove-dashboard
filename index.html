@@ -51,7 +51,7 @@
       <ul class="nav navbar-nav">
         <li><a href="#">Reports</a></li>
         <li><a href="#">Campaigns</a></li>
-        <li class="active" class="dropdown">
+        <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Stations <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             <li><a href="#">Joo Koon</a></li>
@@ -198,7 +198,7 @@ var color = d3.scale.linear()
         d3.selectAll("circle").remove();
         UpdateInnerCir("#box2",factor)
   }));
-  CreateSvgCanvas("#box2","train_up.png");
+  CreateSvgCanvas("#box2","train_up_grey.png");
   function UpdateSvgCanvas (DivID,count) {
     var max = 56;
     if(count>max){
