@@ -110,63 +110,17 @@ var data =
     [61,43,36,72,26,53,19]
   ]
 ];
-  function UpdateWarningStn(id,value){
-    final_color=color(value);
-    console.log(value)
-    console.log(final_color)
-    console.log(id)
-    var warning_stn = d3.select(id).select('svg').select('rect')
-      .style("fill",final_color)
-  }
-  function UpdateWarningTrn(id,value){
-    final_color=color(value);
-    console.log(value)
-    console.log(final_color)
-    console.log(id)
-    var warning_stn = d3.select(id).select('svg').select('rect')
-      .style("fill",final_color)
-  }
-  //style station and train warning buttons  
-  var warning_stn = d3.select('#station-cap').append("svg")
-      .attr("width", 20)
-      .attr("height", 20)
-      .attr("x", 0)
-      .attr("y", 0)
-      .style("margin-left","5px");
-    warning_stn.append("rect")
-        .attr("width","20px")
-        .attr("height","20px")
-        .style("fill", "none")
-        ;
-  //style station and train warning buttons  
-  var warning_stn = d3.select('#train-cap').append("svg")
-      .attr("width", 20)
-      .attr("height", 20)
-      .attr("x", 0)
-      .attr("y", 0)
-      .style("margin-left","20px");
-    warning_stn.append("rect")
-        .attr("width","20px")
-        .attr("height","20px")
-        .style("fill", "none")
-        ;
 
-var color = d3.scale.linear()
-    .domain([0, 1])
-    .range(["white", "red"]);
- 
-// color(-1)   // "#ff0000" red
-// color(-0.5) // "#ff8080" pinkish
-// color(0)    // "#ffffff" white
-// color(0.5)  // "#80c080" getting greener
-// color(0.7)  // "#4da64d" almost there..
-// color(1)    // "#008000" totally green!
+  //Initialize canvas
+  CreateSvgCanvas("#box2","train_up_grey.png");
 
-  //slider function to change opacity
+  //slider function call
   d3.select('#slider1').call(d3.slider().on("slide", function(evt, value) {
+        //range is used to normalise the width of the slider to the minutes between 0500 and 2400
         range = value/100*1140;
-        //number=Math.floor(range);
+        //number is to create a random value each time slider is updated
         number=Math.floor((Math.random() * 57) + 1);
+        //time and the following conditions is to parse the range value to display as if it was time.
         time = 500 + Math.floor(range/60)*100 + Math.floor(range%60);
         if(range<300){
           d3.select('#slider1text').text("0"+time);
@@ -174,6 +128,7 @@ var color = d3.scale.linear()
         else{
           d3.select('#slider1text').text(time);
         }
+        //below condition is to simulate peak and off peak hours
         if(range>0 && range <100){
           factor = (number)*(Math.random())*0.4;
           UpdateWarningStn("#station-cap",factor/57*0.2)
@@ -194,66 +149,11 @@ var color = d3.scale.linear()
           UpdateWarningStn("#station-cap",factor/57*0.2)
           UpdateWarningTrn("#train-cap",factor/57*0.2);
         }
+        //call functions to render changes on ui
         UpdateSvgCanvas("#box2",factor)
         d3.selectAll("circle").remove();
         UpdateInnerCir("#box2",factor)
   }));
-  CreateSvgCanvas("#box2","train_up_grey.png");
-  function UpdateSvgCanvas (DivID,count) {
-    var max = 56;
-    if(count>max){
-      count=max;
-    }
-    value=max-count
-      for(y=0;y<1;y++){
-        for(x=0;x<7;x++){
-          value = value*(Math.random());
-          var smallsvg = d3.select("#inner-svg-"+y+"-"+x)
-            .attr("y", 11+value)
-            .attr("height", 57-value);
-          value=max-count;
-        }
-      }
-  }
-  function UpdateInnerCir (DivID,count) {
-    var max = 57;
-    var dir = 1;
-    if(count>max){
-      count=max;
-    }
-      for(y=1;y<2;y++){
-        for(x=0;x<7;x++){
-          id="#inner-svg-"+y+"-"+x
-          var smallsvg = d3.select(id)
-            i=count*Math.random();
-            i=Math.floor(i);
-            while(i>0){
-              if(dir==1){
-                var circle = smallsvg.append("circle")
-                .attr("cx", 5)
-                .attr("cy", 5+25*i)
-                .attr("r", 10)
-                .attr("width", "100%")
-                .attr("height", "100%")
-                .style("fill", "#000")
-                .style("opacity", "0.5");
-                //console.log(5+25*i)
-              }
-              if(dir==0){
-                var circle = smallsvg.append("circle")
-                .attr("cx", 5)
-                .attr("cy", 5+35*i)
-                .attr("r", 10)
-                .attr("width", "100%")
-                .attr("height", "100%")
-                .style("fill", "#000")
-                .style("opacity", "0.5");
-              } 
-              i--;
-            }
-        }
-      }   
-  }
 
   function CreateSvgCanvas (DivID, image_url) {
     //creates a svg container that is svg
@@ -331,6 +231,109 @@ var color = d3.scale.linear()
       } 
     }
   }
+
+//functions to update canvas items
+  function UpdateSvgCanvas (DivID,count) {
+    var max = 56;
+    if(count>max){
+      count=max;
+    }
+    value=max-count
+      for(y=0;y<1;y++){
+        for(x=0;x<7;x++){
+          value = value*(Math.random());
+          var smallsvg = d3.select("#inner-svg-"+y+"-"+x)
+            .attr("y", 11+value)
+            .attr("height", 57-value);
+          value=max-count;
+        }
+      }
+  }
+  function UpdateInnerCir (DivID,count) {
+    var max = 57;
+    var dir = 1;
+    if(count>max){
+      count=max;
+    }
+      for(y=1;y<2;y++){
+        for(x=0;x<7;x++){
+          id="#inner-svg-"+y+"-"+x
+          var smallsvg = d3.select(id)
+            i=count*Math.random();
+            i=Math.floor(i);
+            while(i>0){
+              if(dir==1){
+                var circle = smallsvg.append("circle")
+                .attr("cx", 5)
+                .attr("cy", 5+25*i)
+                .attr("r", 10)
+                .attr("width", "100%")
+                .attr("height", "100%")
+                .style("fill", "#000")
+                .style("opacity", "0.5");
+                //console.log(5+25*i)
+              }
+              if(dir==0){
+                var circle = smallsvg.append("circle")
+                .attr("cx", 5)
+                .attr("cy", 5+35*i)
+                .attr("r", 10)
+                .attr("width", "100%")
+                .attr("height", "100%")
+                .style("fill", "#000")
+                .style("opacity", "0.5");
+              } 
+              i--;
+            }
+        }
+      }   
+  }
+
+//Initialise and update warning rects on screen
+  function UpdateWarningStn(id,value){
+    final_color=color(value);
+    console.log(value)
+    console.log(final_color)
+    console.log(id)
+    var warning_stn = d3.select(id).select('svg').select('rect')
+      .style("fill",final_color)
+  }
+  function UpdateWarningTrn(id,value){
+    final_color=color(value);
+    console.log(value)
+    console.log(final_color)
+    console.log(id)
+    var warning_stn = d3.select(id).select('svg').select('rect')
+      .style("fill",final_color)
+  }
+  //style station warning buttons  
+  var warning_stn = d3.select('#station-cap').append("svg")
+      .attr("width", 20)
+      .attr("height", 20)
+      .attr("x", 0)
+      .attr("y", 0)
+      .style("margin-left","5px");
+    warning_stn.append("rect")
+        .attr("width","20px")
+        .attr("height","20px")
+        .style("fill", "none")
+        ;
+  //style train warning buttons  
+  var warning_stn = d3.select('#train-cap').append("svg")
+      .attr("width", 20)
+      .attr("height", 20)
+      .attr("x", 0)
+      .attr("y", 0)
+      .style("margin-left","20px");
+    warning_stn.append("rect")
+        .attr("width","20px")
+        .attr("height","20px")
+        .style("fill", "none")
+        ;
+  //define color scale
+  var color = d3.scale.linear()
+    .domain([0, 1])
+    .range(["white", "red"]);
 </script>
 </body>
 </html>
